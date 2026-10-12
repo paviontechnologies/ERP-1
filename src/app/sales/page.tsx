@@ -20,8 +20,8 @@ import {
 
 export default function SalesPage() {
   const { role, currentUser } = useAuth();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({ orders: [], customers: [], invoices: [], leads: [] });
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'orders' | 'invoices' | 'customers' | 'leads'>('orders');
 
   // New Order Modal State

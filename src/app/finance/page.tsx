@@ -17,8 +17,8 @@ import {
 
 export default function FinancePage() {
   const { currentUser } = useAuth();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({ accounts: [], journalEntries: [], budgets: [], expenses: [], budgetAnalysis: [] });
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'coa' | 'journal' | 'expenses' | 'budget'>('coa');
 
   // New Expense Modal State

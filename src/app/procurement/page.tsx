@@ -16,8 +16,8 @@ import {
 
 export default function ProcurementPage() {
   const { currentUser } = useAuth();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({ orders: [], vendors: [], goodsReceipts: [] });
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'orders' | 'vendors' | 'grns'>('orders');
 
   // Create PO Modal

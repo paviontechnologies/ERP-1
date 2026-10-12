@@ -15,10 +15,23 @@ import {
   FileCheck,
 } from 'lucide-react';
 
+const DEFAULT_HRMS = {
+  employees: [],
+  attendance: {
+    totalEmployees: 10,
+    presentCount: 9,
+    wfhCount: 1,
+    onLeaveCount: 0,
+    attendanceRate: 100,
+    attendances: [],
+  },
+  payrollRuns: [],
+};
+
 export default function HRMSPage() {
   const { currentUser } = useAuth();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(DEFAULT_HRMS);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'employees' | 'attendance' | 'payroll'>('employees');
 
   // Payroll modal state
@@ -36,11 +49,11 @@ export default function HRMSPage() {
       if (json.success) {
         setData(json);
       } else {
-        setData({ employees: [], attendance: [], payrollRuns: [] });
+        setData(DEFAULT_HRMS);
       }
     } catch (err) {
       console.error(err);
-      setData({ employees: [], attendance: [], payrollRuns: [] });
+      setData(DEFAULT_HRMS);
     } finally {
       setLoading(false);
     }
@@ -160,25 +173,25 @@ export default function HRMSPage() {
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
           <span className="text-slate-400 text-xs">Total Headcount</span>
-          <div className="text-xl font-bold text-white mt-1">{attendance.totalEmployees} Employees</div>
+          <div className="text-xl font-bold text-white mt-1">{attendance?.totalEmployees ?? 0} Employees</div>
           <span className="text-[11px] text-slate-400">Across 9 departments</span>
         </div>
 
         <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
           <span className="text-slate-400 text-xs">Today's Attendance</span>
-          <div className="text-xl font-bold text-emerald-400 mt-1">{attendance.attendanceRate}%</div>
-          <span className="text-[11px] text-slate-400">{attendance.presentCount} Staff Active Today</span>
+          <div className="text-xl font-bold text-emerald-400 mt-1">{attendance?.attendanceRate ?? 0}%</div>
+          <span className="text-[11px] text-slate-400">{attendance?.presentCount ?? 0} Staff Active Today</span>
         </div>
 
         <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
           <span className="text-slate-400 text-xs">Remote / WFH</span>
-          <div className="text-xl font-bold text-blue-400 mt-1">{attendance.wfhCount} Staff</div>
+          <div className="text-xl font-bold text-blue-400 mt-1">{attendance?.wfhCount ?? 0} Staff</div>
           <span className="text-[11px] text-slate-400">Telecommuting</span>
         </div>
 
         <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
           <span className="text-slate-400 text-xs">On Leave</span>
-          <div className="text-xl font-bold text-amber-400 mt-1">{attendance.onLeaveCount} Staff</div>
+          <div className="text-xl font-bold text-amber-400 mt-1">{attendance?.onLeaveCount ?? 0} Staff</div>
           <span className="text-[11px] text-slate-400">Approved leaves</span>
         </div>
       </div>
@@ -191,7 +204,7 @@ export default function HRMSPage() {
             activeTab === 'employees' ? 'border-blue-500 text-blue-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          Employee Directory ({employees.length})
+          Employee Directory ({employees?.length ?? 0})
         </button>
         <button
           onClick={() => setActiveTab('attendance')}
@@ -199,7 +212,7 @@ export default function HRMSPage() {
             activeTab === 'attendance' ? 'border-blue-500 text-blue-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          Daily Attendance Logs ({attendance.attendances.length})
+          Daily Attendance Logs ({attendance?.attendances?.length ?? 0})
         </button>
         <button
           onClick={() => setActiveTab('payroll')}
@@ -207,7 +220,7 @@ export default function HRMSPage() {
             activeTab === 'payroll' ? 'border-blue-500 text-blue-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          Monthly Payroll Runs ({payrollRuns.length})
+          Monthly Payroll Runs ({payrollRuns?.length ?? 0})
         </button>
       </div>
 

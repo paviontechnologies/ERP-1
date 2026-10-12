@@ -15,7 +15,7 @@ import {
 export default function ApprovalsPage() {
   const { currentUser } = useAuth();
   const [requests, setRequests] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   const fetchApprovals = async () => {

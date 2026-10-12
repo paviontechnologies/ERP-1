@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 
 export default function ProjectsPage() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({ projects: [], tasks: [], tickets: [] });
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'projects' | 'tasks' | 'tickets'>('projects');
 
   const fetchProjects = async () => {

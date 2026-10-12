@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 
 export default function ManufacturingPage() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>({ workOrders: [], boms: [] });
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'workOrders' | 'boms'>('workOrders');
 
   // Create Work Order Modal

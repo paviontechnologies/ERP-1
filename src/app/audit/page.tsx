@@ -11,7 +11,7 @@ import {
 
 export default function AuditPage() {
   const [logs, setLogs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedLog, setSelectedLog] = useState<any>(null);
 
   const fetchAuditLogs = async () => {

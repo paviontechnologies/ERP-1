@@ -77,8 +77,8 @@ const DEFAULT_METRICS = {
 
 export default function DashboardPage() {
   const { role, currentUser, setIsVoiceOpen } = useAuth();
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(DEFAULT_METRICS);
+  const [loading, setLoading] = useState(false);
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
 
