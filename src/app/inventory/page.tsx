@@ -39,15 +39,18 @@ export default function InventoryPage() {
       const json = await res.json();
       if (json.success) {
         setData(json);
-        if (json.products.length > 0 && !adjustProductId) {
+        if (json.products && json.products.length > 0 && !adjustProductId) {
           setAdjustProductId(json.products[0].id);
         }
-        if (json.warehouses.length > 0 && !adjustWarehouseId) {
+        if (json.warehouses && json.warehouses.length > 0 && !adjustWarehouseId) {
           setAdjustWarehouseId(json.warehouses[0].id);
         }
+      } else {
+        setData({ products: [], warehouses: [], movements: [], valuation: 0 });
       }
     } catch (err) {
       console.error(err);
+      setData({ products: [], warehouses: [], movements: [], valuation: 0 });
     } finally {
       setLoading(false);
     }
@@ -88,7 +91,7 @@ export default function InventoryPage() {
     }
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />

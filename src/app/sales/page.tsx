@@ -52,8 +52,12 @@ export default function SalesPage() {
       const salesJson = await salesRes.json();
       const invJson = await invRes.json();
 
-      if (salesJson.success) setData(salesJson);
-      if (invJson.success) {
+      if (salesJson.success) {
+        setData(salesJson);
+      } else {
+        setData({ orders: [], customers: [], invoices: [], leads: [] });
+      }
+      if (invJson.success && invJson.products) {
         const finishedGoods = invJson.products.filter((p: any) => p.type === 'FINISHED_GOOD');
         setAvailableProducts(finishedGoods);
         if (finishedGoods.length > 0) {
@@ -63,6 +67,7 @@ export default function SalesPage() {
       }
     } catch (err) {
       console.error(err);
+      setData({ orders: [], customers: [], invoices: [], leads: [] });
     } finally {
       setLoading(false);
     }
@@ -163,7 +168,7 @@ export default function SalesPage() {
     }
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />

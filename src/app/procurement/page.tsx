@@ -46,12 +46,16 @@ export default function ProcurementPage() {
       const procJson = await procRes.json();
       const invJson = await invRes.json();
 
-      if (procJson.success) setData(procJson);
-      if (invJson.success) {
+      if (procJson.success) {
+        setData(procJson);
+      } else {
+        setData({ orders: [], vendors: [], goodsReceipts: [] });
+      }
+      if (invJson.success && invJson.warehouses) {
         setWarehouses(invJson.warehouses);
         if (invJson.warehouses.length > 0) setSelectedWarehouse(invJson.warehouses[0].id);
 
-        const raw = invJson.products.filter((p: any) => p.type === 'RAW_MATERIAL');
+        const raw = (invJson.products || []).filter((p: any) => p.type === 'RAW_MATERIAL');
         setRawProducts(raw);
         if (raw.length > 0) {
           setSelectedProduct(raw[0].id);
@@ -60,6 +64,7 @@ export default function ProcurementPage() {
       }
     } catch (err) {
       console.error(err);
+      setData({ orders: [], vendors: [], goodsReceipts: [] });
     } finally {
       setLoading(false);
     }
@@ -162,7 +167,7 @@ export default function ProcurementPage() {
     }
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />

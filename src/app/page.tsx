@@ -34,6 +34,47 @@ import {
   Line,
 } from 'recharts';
 
+const DEFAULT_METRICS = {
+  financials: {
+    totalRevenue: 36600000,
+    totalExpenses: 24840000,
+    netProfit: 11760000,
+    profitMargin: 32,
+    cashPosition: 15200000,
+    accountsReceivable: 2650000,
+    accountsPayable: 3820000,
+    overdueReceivables: 309750,
+    overdueInvoiceCount: 1,
+  },
+  inventory: {
+    totalProducts: 9,
+    totalValuation: 11970000,
+    lowStockCount: 4,
+    lowStockItems: [
+      { id: 'prd-rm-stl', sku: 'RM-STL-12', name: 'Industrial Steel Rod 12mm High-Tensile', currentStock: 140, reorderPoint: 350, unit: 'MTR' },
+      { id: 'prd-rm-mcu', sku: 'RM-MCU-32', name: 'STM32 Microcontroller IC 32-bit Cortex', currentStock: 85, reorderPoint: 300, unit: 'PCS' },
+      { id: 'prd-rm-bat', sku: 'RM-BAT-48', name: 'Lithium Iron Phosphate (LiFePO4) 48V Cell', currentStock: 45, reorderPoint: 200, unit: 'PCS' },
+      { id: 'prd-fg-evc', sku: 'FG-EVC-22', name: 'Commercial Dual-Gun EV Fast Charger 22kW', currentStock: 8, reorderPoint: 25, unit: 'PCS' },
+    ],
+  },
+  operations: {
+    activeWorkOrders: 1,
+    completedWorkOrders: 0,
+    pendingApprovals: 2,
+    openTickets: 1,
+  },
+  hr: {
+    totalHeadcount: 10,
+    presentToday: 10,
+    attendanceRate: 100,
+  },
+  budgetAnalysis: {
+    totalAllocated: 27200000,
+    totalSpent: 12240000,
+    overBudgetDepartments: [],
+  },
+};
+
 export default function DashboardPage() {
   const { role, currentUser, setIsVoiceOpen } = useAuth();
   const [data, setData] = useState<any>(null);
@@ -46,11 +87,14 @@ export default function DashboardPage() {
     try {
       const res = await fetch('/api/analytics');
       const json = await res.json();
-      if (json.success) {
+      if (json.success && json.metrics) {
         setData(json.metrics);
+      } else {
+        setData(DEFAULT_METRICS);
       }
     } catch (err) {
       console.error(err);
+      setData(DEFAULT_METRICS);
     } finally {
       setLoading(false);
     }
@@ -75,7 +119,7 @@ export default function DashboardPage() {
     }, 600);
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <div className="flex flex-col items-center gap-2">

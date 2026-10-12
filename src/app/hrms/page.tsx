@@ -33,9 +33,14 @@ export default function HRMSPage() {
     try {
       const res = await fetch('/api/hrms');
       const json = await res.json();
-      if (json.success) setData(json);
+      if (json.success) {
+        setData(json);
+      } else {
+        setData({ employees: [], attendance: [], payrollRuns: [] });
+      }
     } catch (err) {
       console.error(err);
+      setData({ employees: [], attendance: [], payrollRuns: [] });
     } finally {
       setLoading(false);
     }
@@ -98,7 +103,7 @@ export default function HRMSPage() {
     }
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />

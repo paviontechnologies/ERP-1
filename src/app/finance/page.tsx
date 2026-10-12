@@ -38,12 +38,15 @@ export default function FinancePage() {
       const json = await res.json();
       if (json.success) {
         setData(json);
-        if (json.budgetAnalysis.length > 0 && !selectedDept) {
+        if (json.budgetAnalysis && json.budgetAnalysis.length > 0 && !selectedDept) {
           setSelectedDept(json.budgetAnalysis[0].departmentCode);
         }
+      } else {
+        setData({ accounts: [], journalEntries: [], budgets: [], expenses: [], budgetAnalysis: [] });
       }
     } catch (err) {
       console.error(err);
+      setData({ accounts: [], journalEntries: [], budgets: [], expenses: [], budgetAnalysis: [] });
     } finally {
       setLoading(false);
     }
@@ -86,7 +89,7 @@ export default function FinancePage() {
     }
   };
 
-  if (loading || !data) {
+  if (loading && !data) {
     return (
       <div className="flex items-center justify-center h-full text-slate-400">
         <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
